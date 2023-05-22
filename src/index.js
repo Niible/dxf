@@ -4,6 +4,7 @@ import denormalise from './denormalise'
 import groupEntitiesByLayer from './groupEntitiesByLayer'
 import toPolylines from './toPolylines'
 import toSVG from './toSVG'
+import toSVGs from './toSVGs'
 import colors from './util/colors'
 import Helper from './Helper'
 
@@ -14,6 +15,7 @@ export {
   groupEntitiesByLayer,
   toPolylines,
   toSVG,
+  toSVGs,
   colors,
   Helper,
 }

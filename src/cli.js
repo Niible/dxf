@@ -2,14 +2,14 @@
 import commander from 'commander'
 import fs from 'fs'
 
-import { denormalise, groupEntitiesByLayer, parseString, toSVG } from './'
+import { denormalise, groupEntitiesByLayer, parseString, toSVGs } from './'
 
 commander
   .version(require('../package.json').version)
   .description('Converts a dxf file to a svg file.')
-  .arguments('<dxfFile> [svgFile]')
+  .arguments('<dxfFile>')
   .option('-v --verbose', 'Verbose output')
-  .action((dxfFile, svgFile, options) => {
+  .action((dxfFile, options) => {
     const parsed = parseString(fs.readFileSync(dxfFile, 'utf-8'))
 
     if (options.verbose) {
@@ -20,11 +20,11 @@ commander
       })
     }
 
-    fs.writeFileSync(
-      svgFile || `${dxfFile.split('.').slice(0, -1).join('.')}.svg`,
-      toSVG(parsed),
-      'utf-8',
-    )
+    const svgsData = toSVGs(parsed)
+
+    for (const {layer, data} of svgsData) {
+      fs.writeFileSync(`${layer}.svg`, data, 'utf-8')
+    }
   })
   .parse(process.argv)
 
