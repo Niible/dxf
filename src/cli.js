@@ -7,9 +7,9 @@ import { denormalise, groupEntitiesByLayer, parseString, toSVGs } from './'
 commander
   .version(require('../package.json').version)
   .description('Converts a dxf file to a svg file.')
-  .arguments('<dxfFile>')
+  .arguments('<dxfFile> [outputDirectory]')
   .option('-v --verbose', 'Verbose output')
-  .action((dxfFile, options) => {
+  .action((dxfFile, outputDirectory, options) => {
     const parsed = parseString(fs.readFileSync(dxfFile, 'utf-8'))
 
     if (options.verbose) {
@@ -23,7 +23,7 @@ commander
     const svgsData = toSVGs(parsed)
 
     for (const {layer, data} of svgsData) {
-      fs.writeFileSync(`${layer}.svg`, data, 'utf-8')
+      fs.writeFileSync(`${outputDirectory}${layer}.svg`, data, 'utf-8')
     }
   })
   .parse(process.argv)
